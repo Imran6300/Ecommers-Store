@@ -5,24 +5,24 @@ import { getProducts } from "@/utils/fetchProducts";
 
 export const metadata = {
   title: "New Arrivals – Autobotwa Store",
-  description: "The latest products added to the store.",
 };
 
 export default async function NewArrivalsPage() {
   let products = await getProducts();
 
-  const sorted = [...products].sort((a, b) => b.id - a.id);
+  // ✅ Filter only new arrival products
+  const newArrivals = products.filter((item) => item.category === "new");
 
-  if (!sorted.length)
+  if (!newArrivals.length)
     return (
       <div className="mt-32 text-center text-lg">
-        ⚠️ No new products available right now.
+        ⚠️ No new products available.
       </div>
     );
 
   return (
     <div className="mt-32 px-5 flex flex-wrap justify-center gap-6 py-10">
-      {sorted.map((item) => (
+      {newArrivals.map((item) => (
         <Card key={item.id} Data={item} />
       ))}
     </div>

@@ -4,21 +4,18 @@ import Card from "@/Components/Cards/Card";
 import { getProducts } from "@/utils/fetchProducts";
 
 export const metadata = {
-  title: "Women's Clothing – Autobotwa Store",
-  description: "Shop women's dresses, shoes, bags, and fashion essentials.",
+  title: "Women's Fashion – Autobotwa Store",
 };
 
 export default async function WomenPage() {
   let products = await getProducts();
 
-  const women = products.filter((item) =>
-    item.category?.toLowerCase().includes("women")
-  );
+  const women = products.filter((item) => item.category === "womens");
 
   if (!women.length)
     return (
       <div className="mt-32 text-center text-lg">
-        ⚠️ No women's items available right now.
+        ⚠️ No women's products found.
       </div>
     );
 

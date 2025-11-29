@@ -26,8 +26,9 @@ const Card = ({ Data }) => {
             </span>
           )}
 
+          {/* ⭐ FIXED IMAGE SOURCE FOR DUMMYJSON */}
           <Image
-            src={Data.image || "/placeholder.svg"}
+            src={Data.thumbnail || Data.images?.[0] || "/placeholder.svg"}
             alt={Data.title}
             height={220}
             width={220}

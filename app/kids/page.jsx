@@ -5,23 +5,17 @@ import { getProducts } from "@/utils/fetchProducts";
 
 export const metadata = {
   title: "Kids Fashion – Autobotwa Store",
-  description: "Discover stylish and comfortable kids wear.",
 };
 
 export default async function KidsPage() {
   let products = await getProducts();
 
-  // Kids doesn't exist → use shirts + tops
-  const kids = products.filter((item) =>
-    ["tops", "mens-shirts", "womens-dresses", "sports-accessories"].includes(
-      item.category?.toLowerCase()
-    )
-  );
+  const kids = products.filter((item) => item.category === "kids");
 
   if (!kids.length)
     return (
       <div className="mt-32 text-center text-lg">
-        ⚠️ Kids fashion products are unavailable right now.
+        ⚠️ Kids products unavailable right now.
       </div>
     );
 
