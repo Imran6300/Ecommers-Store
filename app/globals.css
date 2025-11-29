@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  text-transform: capitalize;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --nav-h: 72px;
+  --accent: #6c5ce7;
+  --accent2: #00cec9;
+}
