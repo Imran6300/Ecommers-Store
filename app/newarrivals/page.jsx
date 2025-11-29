@@ -9,9 +9,25 @@ export const metadata = {
 };
 
 export default async function NewArrivalsPage() {
-  const products = await getProducts();
+  let products = [];
 
-  const sorted = products.sort((a, b) => b.id - a.id);
+  try {
+    products = await getProducts();
+  } catch (error) {
+    console.error("New Arrivals API Error:", error);
+    products = [];
+  }
+
+  const sorted =
+    products && products.length > 0 ? products.sort((a, b) => b.id - a.id) : [];
+
+  if (!sorted || sorted.length === 0) {
+    return (
+      <div className="text-center mt-32 text-lg">
+        ⚠️ New arrivals are unavailable right now. Please check back soon.
+      </div>
+    );
+  }
 
   return (
     <div className="mt-32 px-5 flex flex-wrap justify-center gap-6 py-10">
