@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import Card from "@/Components/Cards/Card";
 import { getProducts } from "@/utils/fetchProducts";
 
