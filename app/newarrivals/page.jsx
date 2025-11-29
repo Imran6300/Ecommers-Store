@@ -5,29 +5,20 @@ import { getProducts } from "@/utils/fetchProducts";
 
 export const metadata = {
   title: "New Arrivals – Autobotwa Store",
-  description: "Check out the latest fashion drops and newly added products.",
+  description: "The latest products added to the store.",
 };
 
 export default async function NewArrivalsPage() {
-  let products = [];
+  let products = await getProducts();
 
-  try {
-    products = await getProducts();
-  } catch (error) {
-    console.error("New Arrivals API Error:", error);
-    products = [];
-  }
+  const sorted = [...products].sort((a, b) => b.id - a.id);
 
-  const sorted =
-    products && products.length > 0 ? products.sort((a, b) => b.id - a.id) : [];
-
-  if (!sorted || sorted.length === 0) {
+  if (!sorted.length)
     return (
-      <div className="text-center mt-32 text-lg">
-        ⚠️ New arrivals are unavailable right now. Please check back soon.
+      <div className="mt-32 text-center text-lg">
+        ⚠️ No new products available right now.
       </div>
     );
-  }
 
   return (
     <div className="mt-32 px-5 flex flex-wrap justify-center gap-6 py-10">

@@ -5,32 +5,25 @@ import { getProducts } from "@/utils/fetchProducts";
 
 export const metadata = {
   title: "Kids Fashion – Autobotwa Store",
-  description:
-    "Discover fun, stylish, and comfortable kids' clothing for all ages.",
+  description: "Discover stylish and comfortable kids wear.",
 };
 
 export default async function KidsPage() {
-  let products = [];
+  let products = await getProducts();
 
-  try {
-    products = await getProducts();
-  } catch (error) {
-    console.error("Kids API Error:", error);
-    products = [];
-  }
-
-  const kids = products.filter(
-    (item) =>
-      item.category === "men's clothing" || item.category === "women's clothing"
+  // Kids doesn't exist → use shirts + tops
+  const kids = products.filter((item) =>
+    ["tops", "mens-shirts", "womens-dresses", "sports-accessories"].includes(
+      item.category?.toLowerCase()
+    )
   );
 
-  if (!kids || kids.length === 0) {
+  if (!kids.length)
     return (
-      <div className="text-center mt-32 text-lg">
-        ⚠️ Kids products are unavailable right now. Please try again later.
+      <div className="mt-32 text-center text-lg">
+        ⚠️ Kids fashion products are unavailable right now.
       </div>
     );
-  }
 
   return (
     <div className="mt-32 px-5 flex flex-wrap justify-center gap-6 py-10">

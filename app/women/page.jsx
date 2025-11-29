@@ -5,29 +5,22 @@ import { getProducts } from "@/utils/fetchProducts";
 
 export const metadata = {
   title: "Women's Clothing – Autobotwa Store",
-  description:
-    "Shop women's dresses, tops, fashion essentials and new arrivals.",
+  description: "Shop women's dresses, shoes, bags, and fashion essentials.",
 };
 
 export default async function WomenPage() {
-  let products = [];
+  let products = await getProducts();
 
-  try {
-    products = await getProducts();
-  } catch (error) {
-    console.error("Women API Error:", error);
-    products = [];
-  }
+  const women = products.filter((item) =>
+    item.category?.toLowerCase().includes("women")
+  );
 
-  const women = products.filter((item) => item.category === "women's clothing");
-
-  if (!women || women.length === 0) {
+  if (!women.length)
     return (
-      <div className="text-center mt-32 text-lg">
-        ⚠️ Women's products are unavailable right now. Please try again later.
+      <div className="mt-32 text-center text-lg">
+        ⚠️ No women's items available right now.
       </div>
     );
-  }
 
   return (
     <div className="mt-32 px-5 flex flex-wrap justify-center gap-6 py-10">

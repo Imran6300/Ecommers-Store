@@ -1,52 +1,38 @@
 export async function getProducts() {
-  const API = "https://fakestoreapi.com/products";
-
   try {
-    const res = await fetch(API, {
+    const res = await fetch("https://dummyjson.com/products", {
       cache: "no-store",
       next: { revalidate: 0 },
     });
 
     if (!res.ok) {
-      throw new Error("API returned not OK");
+      throw new Error("API failed");
     }
 
     const data = await res.json();
 
-    // Ensure data is valid array
-    if (!Array.isArray(data) || data.length === 0) {
-      throw new Error("Invalid product data");
-    }
-
-    return data;
+    return data.products; // dummyjson returns { products: [] }
   } catch (err) {
-    console.error("❌ getProducts() API Failed →", err.message);
+    console.error("API Error:", err.message);
 
-    // ⭐ GUARANTEED fallback products (never empty)
+    // Strong fallback to prevent UI crashing
     return [
       {
         id: 1,
-        title: "Casual Men's Shirt",
-        price: 499,
-        description: "Fallback product (API failed). Stylish and comfortable.",
-        category: "men's clothing",
-        image: "https://via.placeholder.com/300x400",
+        title: "Fallback Men's Shirt",
+        price: 599,
+        description:
+          "This is fallback data displayed when the API fails. Stylish Men's shirt.",
+        category: "men",
+        thumbnail: "https://via.placeholder.com/300x400",
       },
       {
         id: 2,
-        title: "Women's Summer Dress",
-        price: 799,
-        description: "Fallback product (API failed). Beautiful floral design.",
-        category: "women's clothing",
-        image: "https://via.placeholder.com/300x400",
-      },
-      {
-        id: 3,
-        title: "Kids T-Shirt",
-        price: 299,
-        description: "Fallback product (API failed). Soft cotton kids wear.",
-        category: "men's clothing",
-        image: "https://via.placeholder.com/300x400",
+        title: "Fallback Women's Dress",
+        price: 899,
+        description: "Fallback product to keep UI stable even if API is down.",
+        category: "women",
+        thumbnail: "https://via.placeholder.com/300x400",
       },
     ];
   }
