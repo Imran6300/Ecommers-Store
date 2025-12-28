@@ -1,154 +1,97 @@
 "use client";
-import Image from "next/image";
+
+import { motion } from "framer-motion";
 
 export default function Hero() {
   return (
-    <>
-      <div
+    <section className="relative w-full h-[calc(100vh-80px)] mt-[80px] overflow-hidden bg-[#2D3436] text-[#F0F0F0]">
+      {/* BACKGROUND IMAGE */}
+      <motion.img
+        src="https://images.unsplash.com/photo-1520975916090-3105956dac38?q=80&w=1920&auto=format&fit=crop"
+        alt="Hero Background"
+        initial={{ scale: 1.15 }}
+        animate={{ scale: 1 }}
+        transition={{ duration: 2.2, ease: "easeOut" }}
         className="
-           h-[100vh] w-full flex items-center justify-center gap-3
-    px-5 py-5 overflow-hidden
-    pt-[90px] max-md:pt-[120px]
-    max-md:flex-col max-md:h-auto max-md:pt-[120px]
-        "
-      >
-        <section
-          className="
-            w-[35%] h-full flex items-center justify-center p-5 rounded-xl
-            opacity-0 animate-slideFadeIn
-            bg-gradient-to-tr from-[#6c5ce7] via-[#00cec9] to-[#6c5ce7]
-            bg-[length:400%_400%] animate-gradientShift
-            max-md:w-full max-md:h-auto
-          "
-        >
-          <div className="w-full text-left px-2 max-md:text-center">
-            <h1
-              className="
-                text-[clamp(1.8rem,2.5vw,3rem)]
-                text-[#6c5ce7] font-semibold relative inline-block
-              "
-            >
-              trending collection
-              <span className="absolute left-0 bottom-0 h-[3px] w-0 animate-underline bg-gradient-to-r from-[#6c5ce7] to-[#fd79a8]" />
-            </h1>
+  absolute inset-0 w-full h-full 
+  object-cover 
+  object-[50%_30%] 
+  scale-105
+"
+      />
 
-            <h3 className="text-[#2d3436] text-[clamp(1rem,2vw,1.5rem)] my-2">
-              Fresh styles, fresh vibes <br /> just dropped for you.
-            </h3>
+      {/* DARK OVERLAY */}
+      <div className="absolute inset-0 bg-[#2D3436]/75" />
 
-            <button
-              onClick={() => alert("This Feature Is Comming Soon")}
-              className="
-                h-[45px] w-[120px] rounded-lg text-white bg-[#6c5ce7]
-                text-[1rem] mr-3 mt-2 transition-all duration-300
-                hover:bg-[#5a4bd4]
-                max-md:w-full max-md:mr-0
-              "
-            >
-              Shop Now
-            </button>
+      {/* DECORATIVE GLOWS */}
+      <motion.div
+        animate={{ x: [0, 40, 0], y: [0, -30, 0] }}
+        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute -top-40 -left-40 w-[600px] h-[600px] bg-[#6C5CE7]/35 blur-[200px] rounded-full"
+      />
 
-            <button
-              onClick={() => alert("This Feature Is Comming Soon")}
-              className="
-                h-[45px] w-[120px] rounded-lg text-[#2d3436] bg-[#00cec9]
-                text-[1rem] mt-2 transition-all duration-300
-                hover:bg-[#00b5ae]
-                max-md:w-full
-              "
-            >
-              Explore
-            </button>
-          </div>
-        </section>
+      <motion.div
+        animate={{ x: [0, -30, 0], y: [0, 40, 0] }}
+        transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute bottom-[-350px] right-[-350px] w-[700px] h-[700px] bg-[#00CEC9]/25 blur-[220px] rounded-full"
+      />
 
-        <section
-          className="
-            w-[65%] h-full flex items-center justify-center rounded-xl
-            opacity-0 animate-slideFadeInRight
-            max-md:w-full max-md:h-auto
-          "
-        >
-          <Image
-            src="/heroimage.jpg"
-            alt="Hero Banner"
-            height={600}
-            width={600}
-            className="
-              w-full h-full rounded-xl object-cover
-              transition-all duration-500
-              hover:shadow-[0_20px_40px_rgba(0,0,0,0.2)]
-            "
+      {/* SUBTLE GRID */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:80px_80px]" />
+
+      {/* CENTERED CONTENT */}
+      <div className="relative z-10 h-full flex items-center justify-center px-6 text-center">
+        <div className="max-w-3xl">
+          {/* Accent line */}
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: 120 }}
+            transition={{ duration: 1 }}
+            className="h-[3px] bg-[#FD79A8] mx-auto mb-8"
           />
-        </section>
+
+          {/* Headline */}
+          <motion.h1
+            initial={{ opacity: 0, y: 60 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: "easeOut" }}
+            className="text-6xl md:text-7xl xl:text-8xl font-extrabold leading-[0.95]"
+          >
+            MOVE WITH <br />
+            <span className="text-[#6C5CE7]">INTENT</span>
+          </motion.h1>
+
+          {/* Description */}
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.8 }}
+            className="mt-8 text-lg md:text-xl text-white/70"
+          >
+            A modern brand built on confidence, motion, and purpose. Designed to
+            feel powerful — not loud.
+          </motion.p>
+
+          {/* CTA */}
+          <motion.button
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.95 }}
+            className="mt-12 px-14 py-4 bg-[#00CEC9] text-[#2D3436] rounded-full font-semibold shadow-2xl"
+          >
+            Enter Store
+          </motion.button>
+        </div>
       </div>
 
-      <div
-        className="
-          w-full flex flex-wrap justify-center items-center overflow-hidden
-        "
-      ></div>
-
-      <style jsx>{`
-        @keyframes underlineSlide {
-          from {
-            width: 0;
-          }
-          to {
-            width: 90%;
-          }
-        }
-
-        .animate-underline {
-          animation: underlineSlide 1.5s ease-in-out forwards;
-        }
-
-        @keyframes gradientShift {
-          0% {
-            background-position: 0% 50%;
-          }
-          50% {
-            background-position: 100% 50%;
-          }
-          100% {
-            background-position: 0% 50%;
-          }
-        }
-
-        .animate-gradientShift {
-          animation: gradientShift 10s ease infinite;
-        }
-
-        @keyframes slideFadeIn {
-          0% {
-            opacity: 0;
-            transform: translateX(-50px) scale(0.95);
-          }
-          100% {
-            opacity: 1;
-            transform: translateX(0) scale(1);
-          }
-        }
-
-        .animate-slideFadeIn {
-          animation: slideFadeIn 1.5s ease forwards;
-        }
-
-        @keyframes slideFadeInRight {
-          0% {
-            opacity: 0;
-            transform: translateX(50px) scale(0.95);
-          }
-          100% {
-            opacity: 1;
-            transform: translateX(0) scale(1);
-          }
-        }
-
-        .animate-slideFadeInRight {
-          animation: slideFadeInRight 1s ease forwards;
-        }
-      `}</style>
-    </>
+      {/* SCROLL INDICATOR */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.8 }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-xs tracking-widest text-white/50"
+      >
+        SCROLL ↓
+      </motion.div>
+    </section>
   );
 }

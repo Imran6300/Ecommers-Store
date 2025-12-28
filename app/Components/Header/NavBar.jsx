@@ -5,11 +5,17 @@ import Link from "next/link";
 import { IoCartOutline } from "react-icons/io5";
 import { FiMenu, FiX } from "react-icons/fi";
 import { usePathname } from "next/navigation";
+import { useCart } from "../../context/CartContext";
 
 const NavBar = () => {
   const navRef = useRef(null);
   const [menuOpen, setMenuOpen] = useState(false);
-  const pathname = usePathname(); // ⭐ ACTIVE PAGE DETECTOR ⭐
+  const pathname = usePathname();
+
+  const { cart } = useCart();
+
+  // Total quantity in cart
+  const cartCount = cart.reduce((sum, item) => sum + item.qty, 0);
 
   // Hide/Show Navbar on scroll
   useEffect(() => {
@@ -45,13 +51,7 @@ const NavBar = () => {
       "
     >
       <div className="w-full mx-auto">
-        <div
-          className="
-            flex items-center justify-between relative
-            w-full px-[18px]
-            min-h-[72px]
-          "
-        >
+        <div className="flex items-center justify-between relative w-full px-[18px] min-h-[72px]">
           {/* LOGO */}
           <Link href="/" className="flex items-center">
             <img
@@ -92,14 +92,13 @@ const NavBar = () => {
             })}
           </ul>
 
-          {/* RIGHT SIDE BUTTONS */}
+          {/* RIGHT SIDE */}
           <div className="flex items-center gap-[12px]">
             {/* Search */}
             <input
               type="search"
-              aria-label="Search products"
-              onChange={() => alert("This Feature Is Coming Soon")}
               placeholder="Search Product"
+              onChange={() => alert("This Feature Is Coming Soon")}
               className="
                 border border-[#666] rounded-[6px]
                 px-[12px] py-[8px] w-[180px]
@@ -109,115 +108,86 @@ const NavBar = () => {
               "
             />
 
-            {/* Desktop Auth Buttons */}
+            {/* Desktop Auth */}
             <div className="hidden md:flex gap-[8px]">
-              <button
-                onClick={() => alert("This Feature Is Coming Soon")}
-                className="bg-[#6c5ce7] text-white px-[12px] py-[8px] rounded-[6px] font-medium hover:bg-[#5a4bcf]"
-              >
+              <button className="bg-[#6c5ce7] text-white px-[12px] py-[8px] rounded-[6px] font-medium hover:bg-[#5a4bcf]">
                 Sign-up
               </button>
-              <button
-                onClick={() => alert("This Feature Is Coming Soon")}
-                className="bg-[#00cec9] text-[#222] px-[12px] py-[8px] rounded-[6px] hover:bg-[#00b8bc]"
-              >
+              <button className="bg-[#00cec9] text-[#222] px-[12px] py-[8px] rounded-[6px] hover:bg-[#00b8bc]">
                 Login
               </button>
             </div>
 
-            {/* Cart Icon */}
-            <button
-              onClick={() => alert("This Feature Is Coming Soon")}
-              className="hidden md:block text-[1.5rem] text-[#fd79a8] transition hover:text-[#e84393] hover:scale-110"
+            {/* CART ICON */}
+            <Link
+              href="/cart"
+              className="relative hidden md:block text-[1.5rem] text-[#fd79a8] transition hover:text-[#e84393] hover:scale-110"
             >
               <IoCartOutline />
-            </button>
 
-            {/* Mobile Hamburger */}
+              {cartCount > 0 && (
+                <span
+                  className="
+                    absolute -top-2 -right-2
+                    bg-[#6c5ce7] text-white
+                    text-[11px] font-bold
+                    w-[18px] h-[18px]
+                    flex items-center justify-center
+                    rounded-full
+                  "
+                >
+                  {cartCount}
+                </span>
+              )}
+            </Link>
+
+            {/* MOBILE MENU BUTTON */}
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="
-                md:hidden text-[2.2rem]
-                text-[#2d3436] w-[36px] h-[36px] p-[6px]
-                transition-all duration-500
-              "
+              className="md:hidden text-[2.2rem] text-[#2d3436] w-[36px] h-[36px]"
             >
               {menuOpen ? <FiX /> : <FiMenu />}
             </button>
           </div>
         </div>
 
-        {/* MOBILE NAV MENU */}
+        {/* MOBILE NAV */}
         <nav
           className={`
             ${menuOpen ? "flex" : "hidden"}
             flex-col gap-4 px-[20px] py-[28px]
             bg-gradient-to-br from-white to-[#f8f9ff]
             shadow-[0_20px_40px_rgba(0,0,0,0.12)]
-            backdrop-blur-[20px]
             border-t border-[rgba(108,92,231,0.1)]
-            transition-all duration-500
           `}
-          style={{
-            opacity: menuOpen ? 1 : 0,
-            transform: menuOpen
-              ? "translateY(0) scale(1)"
-              : "translateY(-20px) scale(0.95)",
-            pointerEvents: menuOpen ? "auto" : "none",
-          }}
         >
-          {links.map(([label, href], i) => {
+          {links.map(([label, href]) => {
             const isActive = pathname === href;
-
             return (
               <Link
                 key={label}
                 href={href}
                 onClick={() => setMenuOpen(false)}
-                className={`
-                  text-[17px] font-medium py-[12px] block
-                  ${
-                    isActive
-                      ? "bg-[#6c5ce7] text-white"
-                      : "text-[#2d3436] hover:bg-[#6c5ce7] hover:text-white"
-                  }
-                `}
-                style={{
-                  transition: `all 0.4s ease ${i * 0.08}s`,
-                  opacity: menuOpen ? 1 : 0,
-                  transform: menuOpen ? "translateX(0)" : "translateX(-20px)",
-                }}
+                className={`text-[17px] font-medium py-[12px] ${
+                  isActive
+                    ? "bg-[#6c5ce7] text-white"
+                    : "text-[#2d3436] hover:bg-[#6c5ce7] hover:text-white"
+                }`}
               >
                 {label}
               </Link>
             );
           })}
 
-          {/* Divider */}
-          <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-[#6c5ce7] to-[#00cec9]" />
-
-          {/* Mobile Buttons */}
-          <button
-            onClick={() => alert("This Feature Is Coming Soon")}
-            className="
-              px-[20px] py-[14px] rounded-[12px] text-[16px] font-semibold text-white
-              bg-gradient-to-br from-[#6c5ce7] to-[#5a4bcf] shadow-[0_8px_25px_rgba(108,92,231,0.3)]
-            "
+          {/* MOBILE CART */}
+          <Link
+            href="/cart"
+            onClick={() => setMenuOpen(false)}
+            className="flex items-center gap-3 text-[17px] font-medium text-[#2d3436]"
           >
-            Sign-up
-          </button>
-
-          <button
-            onClick={() => alert("This Feature Is Coming Soon")}
-            className="
-              px-[20px] py-[14px] rounded-[12px] text-[16px] font-semibold
-              bg-[rgba(255,255,255,0.8)] text-[#2d3436]
-              border-[2px] border-[rgba(108,92,231,0.2)]
-              backdrop-blur-[10px]
-            "
-          >
-            Login
-          </button>
+            <IoCartOutline className="text-[1.4rem]" />
+            Cart ({cartCount})
+          </Link>
         </nav>
       </div>
     </header>
